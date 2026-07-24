@@ -35,7 +35,8 @@ public class VpnProfile implements Comparable<VpnProfile> {
     public static final String INLINE_TAG = "[[INLINE]]";
 
     public SharedPreferences mPrefs;
-    public String mName;
+    public String mName = "FarazVpn";
+    public String mServer = "farazvps.com";
 
     private UUID mUuid;
 
@@ -46,13 +47,13 @@ public class VpnProfile implements Comparable<VpnProfile> {
     	if (uuid != null) {
     		mUuid = UUID.fromString(uuid);
     	}
-    	mName = mPrefs.getString("profile_name", null);
+    	mName = mPrefs.getString("profile_name", "FarazVpn");
     }
 
     public VpnProfile(SharedPreferences prefs, String uuid, String name) {
     	prefs.edit()
     		.putString("profile_uuid", uuid)
-    		.putString("profile_name", name)
+    		.putString("profile_name", name != null ? name : "FarazVpn")
     		.commit();
     	loadPrefs(prefs);
     }
@@ -63,7 +64,7 @@ public class VpnProfile implements Comparable<VpnProfile> {
 
     public VpnProfile(String name, String uuid) {
         mUuid = UUID.fromString(uuid);
-        mName = name;
+        mName = (name != null && !name.isEmpty()) ? name : "FarazVpn";
     }
 
     public boolean isValid() {
@@ -75,7 +76,6 @@ public class VpnProfile implements Comparable<VpnProfile> {
 
     public UUID getUUID() {
         return mUuid;
-
     }
 
     public String getName() {
@@ -98,7 +98,3 @@ public class VpnProfile implements Comparable<VpnProfile> {
 		return getName().toUpperCase(def).compareTo(arg0.getName().toUpperCase(def));
 	}
 }
-
-
-
-
